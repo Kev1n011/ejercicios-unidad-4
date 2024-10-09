@@ -1,0 +1,61 @@
+@main-color: #d291bc;
+@color-secundario: #52a8bd;
+@input-width: 100%;
+@legend-color: limegreen;
+@border-radius: 5px;
+@button-color: white;
+
+.formulario-container {
+    width: 50vw;
+    margin: 50px auto;
+    background-color: @main-color;
+    padding: 20px;
+    border-radius: @border-radius;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.formulario-nombre {
+    font-size: 50px;
+}
+
+fieldset {
+    border: 2px solid @color-secundario;
+    padding: 20px;
+    legend {
+        font-size: 1.5em;
+        color: @legend-color;
+    }
+}
+
+.roles {
+    margin: 20px 0;
+    label {
+        display: block;
+        padding: 5px;
+        font-size: 1.2em;
+        &:nth-child(1) { background-color: #add8e6; }
+        &:nth-child(2) { background-color: #87ceeb; }
+        &:nth-child(3) { background-color: #4682b4; }
+        &:nth-child(4) { background-color: #ffa07a; }
+        &:nth-child(5) { background-color: #f08080; }
+        input {
+            margin-right: 10px;
+        }
+    }
+}
+
+button {
+    background-color: @button-color;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: @border-radius;
+    font-size: 1.2em;
+    cursor: pointer;
+    color: black;
+  
+}
+
+.olvidar-contrasena{
+    font-size: 30px;
+}
