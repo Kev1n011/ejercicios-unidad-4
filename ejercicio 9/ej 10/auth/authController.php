@@ -1,34 +1,54 @@
 <?php
 session_start();
 
-class AuthController {
-    private $validCredentials = [
-        'kevin@gmail.com' => '1234'
-    ];
+if(isset($_POST["enviar"])) {
+    switch ($_POST["enviar"]) {
+        case "enviar":
+            $username = $_POST["username"];
+            $password = $_POST["password"];
 
-    public function login($username, $password) {
-        if (array_key_exists($username, $this->validCredentials) && $this->validCredentials[$username] === $password) {
-            $_SESSION['auth'] = true;
-            $_SESSION['username'] = $username;
-            header('Location: ../home.html');
-            exit();
-        } else {
-            echo "¡Credenciales inválidas!";
+            $login = new AuthController();
+            $login -> validar($username, $password);
+            break;
+    }
+};
+
+ class AuthController{
+
+    public function validar($username, $password) {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://crud.jonathansoto.mx/api/login',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => array('email' => $username,'password' => $password),
+        ));
+
+        $response = curl_exec($curl);
+
+        $response = json_decode($response);
+
+        if(isset($response -> data) && is_object($response) ){
+            echo "sí entró response";
+            header('Location: ../home.php');
         }
+
+        else {
+            echo "Las credenciales no son correctas";
+        }
+
+        curl_close($curl);
+        //echo $response;
+
+
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['username']) && isset($_POST['password'])) {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
 
-        $authController = new AuthController();
-        $authController->login($username, $password);
-    } else {
-        echo "campos incompletos.";
-    }
-} else {
-    echo "solicitud no valida.";
-}
 ?>

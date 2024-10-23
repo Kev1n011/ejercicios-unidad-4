@@ -67,7 +67,7 @@
                         <img src="/3276535.png" alt="">
     
                     </div>
-                    <form method="POST" action="/auth/authController.php">
+                    <form method="POST" action="./auth/authController.php">
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Email address</label>
                             <input type="text" class="form-control" id="exampleInputEmail1" name="username" aria-describedby="emailHelp" required>
@@ -76,9 +76,10 @@
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">Password</label>
                             <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+                            <input type="hidden" name="enviar" value="enviar">
                         </div>
                         <div class="d-grid gap-2">
-                            <button class="btn btn-primary" type="submit" value="enviar">Enviar</button>
+                            <button class="btn btn-primary" type="submit" value="">Enviar</button>
                         </div>
                     </form>
                     
