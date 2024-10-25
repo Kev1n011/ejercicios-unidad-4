@@ -1,10 +1,36 @@
 <?php
-session_start();
+$curl = curl_init();
 
-$email = $_SESSION['username'];
-$password = $_SESSION['password'];
+curl_setopt_array($curl, array(
+	CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products',
+	CURLOPT_RETURNTRANSFER => true,
+	CURLOPT_ENCODING => '',
+	CURLOPT_MAXREDIRS => 10,
+	CURLOPT_TIMEOUT => 0,
+	CURLOPT_FOLLOWLOCATION => true,
+	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+	CURLOPT_CUSTOMREQUEST => 'GET',
+	CURLOPT_HTTPHEADER => array(
+		'Authorization: Bearer 9om4qsdlVDEYuHVL6plynX9eCXTUa9126mZz5Vlc',
+		'Cookie: XSRF-TOKEN=eyJpdiI6InhwSXNxUEJFdHNJYW05SGFoNzVpOHc9PSIsInZhbHVlIjoibk5JZjdkL2kyNXpOajVubWZ4NGlhQ1VDTkZZZnRlcCtLS1FiTXlLY3NDTlJmZFFaTVZQZndGengwU2hUZmlSbGRqU0NhY1FjUnB4SUVhL3F6U0k3ZWgzODRDZnhOYlpLYVEwZExtQW9PNjdMbkhFb1RyZFZZM3RBUzEzZ05meDgiLCJtYWMiOiJhYjEyNDI2YzYxMjhhMDQ2NzI5OGNhYmUzOTVlYzQ1MTU4ZTk4NGE1ODgzNGIxZDk2NzAwNWNjYTY5NWNiYzYzIiwidGFnIjoiIn0%3D; apicrud_session=eyJpdiI6InR1amQ0M2FYYVJiRW9odkh5Mk5GbUE9PSIsInZhbHVlIjoiRlNmQ1NLbnlxSGZyRGxiWlcwejByVTJBYmZWZ0tuT2E4bDRQd05RV2xVOWM4dHNMTmdYVU5sdnRsWmdyRGNKZjVQR1BUUERUVGRoQnNmRlcvNlRQa3ZnTW8vdmhkdmtjanZxZ1Zib3hFZERhWmhweXFLcU9QM1gxL3QzZGNSbUQiLCJtYWMiOiIyZGNiYzEyNjI2ZTc0NWNlY2EwYzgzMzM3MDVmMDIwMDAzYTZjZmIyZTVhNzhhNGY5OWQ4NjRlYjZhZjBhOTA4IiwidGFnIjoiIn0%3D'
+	),
+));
+
+$response = curl_exec($curl);
+
+$response = json_decode($response, true);
+//print_r($response);
+$arreglo = [];
+
+foreach ($response['data'] as &$valor) {
+
+	$arreglo[] = $valor;
+	//print_r($arreglo[1]['name']);
+}
+//print_r($arreglo[11]['name']);
+
+curl_close($curl);
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -21,7 +47,27 @@ $password = $_SESSION['password'];
 		}
 
 		.cartas {
-			margin-top: 100px;
+			margin-top: 60px;
+		}
+
+		.card {
+			margin-top: 40px;
+			min-width: 330px;
+		}
+
+		.card img {
+			height: 200px;
+		}
+
+		.card-body {
+			min-height: 400px;
+			
+		}
+
+		.carta-botones {
+			position: absolute;
+			bottom: 0;
+			margin-bottom: 14px;
 		}
 
 		.btn-agregar {
@@ -36,7 +82,6 @@ $password = $_SESSION['password'];
 </head>
 
 <body>
-	
 
 	<div class="container-fluid min-vh-100 d-flex flex-column">
 
@@ -166,23 +211,38 @@ $password = $_SESSION['password'];
 			<div class="col-lg-10 col-md-9 col-sm-8">
 
 				<div class="main p-2">
-					<h3>Nombre de usuario <?php echo $email ?></h3>
 					<div class="btn-agregar">
 						<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 							data-bs-target="#exampleModal">Agregar</button>
 
 					</div>
 					<div class="row cartas">
-						<div class="col-lg-4 col-md-6 col-sm-12">
-							<div class="card" style="width: 18rem;">
-								<img src="./producto.jpg" class="card-img-top" alt="...">
+
+
+
+
+
+						<?php
+						$contador = 0;
+						foreach ($response['data'] as &$valor) {
+							$contador = $contador + 1;
+							$arreglo[] = $valor;
+							
+
+							echo '
+								<div class="col-lg-4 col-md-6 col-sm-12">
+
+								<div class="card" style="width: 18rem;">
+								<img src= "' . $arreglo[$contador]['cover'] . '" class="card-img-top" alt="...">
 								<div class="card-body">
-									<h5 class="card-title">Refresco</h5>
-									<p class="card-text">Refresco de 600ml</p>
+
+
+									<h5 class="card-title">'. $arreglo[$contador]['name']. '</h5>
+									<p class="card-text">'.$arreglo[$contador]['description'].'</p>
 									<div class="row carta-botones">
 
 										<div class="row">
-											<div class="col-7">
+											<div class="col-8">
 												<a href="./producto.html" class="btn btn-primary">Ir al producto</a>
 											</div>
 											<div class="col-4">
@@ -199,64 +259,14 @@ $password = $_SESSION['password'];
 
 								</div>
 							</div>
-
-						</div>
-						<div class="col-lg-4 col-md-6 col-sm-12">
-							<div class="card" style="width: 18rem;">
-								<img src="./producto.jpg" class="card-img-top" alt="...">
-								<div class="card-body">
-									<h5 class="card-title">Refresco</h5>
-									<p class="card-text">Refresco de 600ml</p>
-									<div class="row carta-botones">
-
-										<div class="row">
-											<div class="col-7">
-												<a href="./producto.html" class="btn btn-primary">Ir al producto</a>
-											</div>
-											<div class="col-4">
-												<button type="button" class="btn btn-danger">Eliminar</button>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-8">
-												<button type="button" class="btn btn-warning" data-bs-toggle="modal"
-													data-bs-target="#exampleModal">Editar</button>
-											</div>
-										</div>
-									</div>
-
 								</div>
-							</div>
+								';
+						}
 
-						</div>
-						<div class="col-lg-4 col-md-6 col-sm-12">
-							<div class="card" style="width: 18rem;">
-								<img src="./producto.jpg" class="card-img-top" alt="...">
-								<div class="card-body">
-									<h5 class="card-title">Refresco</h5>
-									<p class="card-text">Refresco de 600ml</p>
-									<div class="row carta-botones">
+						?>
 
-										<div class="row">
-											<div class="col-7">
-												<a href="./producto.html" class="btn btn-primary">Ir al producto</a>
-											</div>
-											<div class="col-4">
-												<button type="button" class="btn btn-danger">Eliminar</button>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-8">
-												<button type="button" class="btn btn-warning" data-bs-toggle="modal"
-													data-bs-target="#exampleModal">Editar</button>
-											</div>
-										</div>
-									</div>
 
-								</div>
-							</div>
 
-						</div>
 					</div>
 
 

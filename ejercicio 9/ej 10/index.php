@@ -42,7 +42,7 @@
         <div class="row">
             <div class="col-6">
                 <div class="imagen">
-                    <img src="/los-10-sonidos-principales-del-perro.jpg" alt="">
+                    <img src="./los-10-sonidos-principales-del-perro.jpg" alt="">
 
                 </div>
                 
@@ -64,7 +64,7 @@
     
     
                     <div class="text-center">
-                        <img src="/3276535.png" alt="">
+                        <img src="./3276535.png" alt="">
     
                     </div>
                     <form method="POST" action="./auth/authController.php">
