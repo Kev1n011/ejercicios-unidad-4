@@ -1,35 +1,8 @@
 <?php
-$curl = curl_init();
 
-curl_setopt_array($curl, array(
-	CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products',
-	CURLOPT_RETURNTRANSFER => true,
-	CURLOPT_ENCODING => '',
-	CURLOPT_MAXREDIRS => 10,
-	CURLOPT_TIMEOUT => 0,
-	CURLOPT_FOLLOWLOCATION => true,
-	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-	CURLOPT_CUSTOMREQUEST => 'GET',
-	CURLOPT_HTTPHEADER => array(
-		'Authorization: Bearer 9om4qsdlVDEYuHVL6plynX9eCXTUa9126mZz5Vlc',
-		'Cookie: XSRF-TOKEN=eyJpdiI6InhwSXNxUEJFdHNJYW05SGFoNzVpOHc9PSIsInZhbHVlIjoibk5JZjdkL2kyNXpOajVubWZ4NGlhQ1VDTkZZZnRlcCtLS1FiTXlLY3NDTlJmZFFaTVZQZndGengwU2hUZmlSbGRqU0NhY1FjUnB4SUVhL3F6U0k3ZWgzODRDZnhOYlpLYVEwZExtQW9PNjdMbkhFb1RyZFZZM3RBUzEzZ05meDgiLCJtYWMiOiJhYjEyNDI2YzYxMjhhMDQ2NzI5OGNhYmUzOTVlYzQ1MTU4ZTk4NGE1ODgzNGIxZDk2NzAwNWNjYTY5NWNiYzYzIiwidGFnIjoiIn0%3D; apicrud_session=eyJpdiI6InR1amQ0M2FYYVJiRW9odkh5Mk5GbUE9PSIsInZhbHVlIjoiRlNmQ1NLbnlxSGZyRGxiWlcwejByVTJBYmZWZ0tuT2E4bDRQd05RV2xVOWM4dHNMTmdYVU5sdnRsWmdyRGNKZjVQR1BUUERUVGRoQnNmRlcvNlRQa3ZnTW8vdmhkdmtjanZxZ1Zib3hFZERhWmhweXFLcU9QM1gxL3QzZGNSbUQiLCJtYWMiOiIyZGNiYzEyNjI2ZTc0NWNlY2EwYzgzMzM3MDVmMDIwMDAzYTZjZmIyZTVhNzhhNGY5OWQ4NjRlYjZhZjBhOTA4IiwidGFnIjoiIn0%3D'
-	),
-));
-
-$response = curl_exec($curl);
-
-$response = json_decode($response, true);
-//print_r($response);
-$arreglo = [];
-
-foreach ($response['data'] as &$valor) {
-
-	$arreglo[] = $valor;
-	//print_r($arreglo[1]['name']);
-}
+include './detalle_producto.php';
 //print_r($arreglo[11]['name']);
 
-curl_close($curl);
 ?>
 
 <!DOCTYPE html>
@@ -61,7 +34,7 @@ curl_close($curl);
 
 		.card-body {
 			min-height: 400px;
-			
+
 		}
 
 		.carta-botones {
@@ -217,33 +190,29 @@ curl_close($curl);
 
 					</div>
 					<div class="row cartas">
-
-
-
-
-
 						<?php
-						$contador = 0;
-						foreach ($response['data'] as &$valor) {
-							$contador = $contador + 1;
-							$arreglo[] = $valor;
-							
+						foreach ($arreglo as $valor) {
 
 							echo '
 								<div class="col-lg-4 col-md-6 col-sm-12">
 
 								<div class="card" style="width: 18rem;">
-								<img src= "' . $arreglo[$contador]['cover'] . '" class="card-img-top" alt="...">
+								<img src= "' . $valor['cover'] . '" class="card-img-top" alt="...">
 								<div class="card-body">
 
 
-									<h5 class="card-title">'. $arreglo[$contador]['name']. '</h5>
-									<p class="card-text">'.$arreglo[$contador]['description'].'</p>
+									<h5 class="card-title">' . $valor['name'] . '</h5>
+									<p class="card-text">' . $valor['description'] . '</p>
 									<div class="row carta-botones">
 
 										<div class="row">
 											<div class="col-8">
-												<a href="./producto.html" class="btn btn-primary">Ir al producto</a>
+												
+												<form method="POST">
+													 <input type="hidden" name="id_producto" value="'. $valor['id'].'">
+													<button type="submit" name="btn-primary" class="btn btn-primary">Ir al producto</button>
+
+												</form>
 											</div>
 											<div class="col-4">
 												<button type="button" class="btn btn-danger">Eliminar</button>
@@ -261,6 +230,7 @@ curl_close($curl);
 							</div>
 								</div>
 								';
+						
 						}
 
 						?>

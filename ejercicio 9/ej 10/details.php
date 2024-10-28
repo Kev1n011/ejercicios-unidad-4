@@ -1,4 +1,20 @@
+<?php
+session_start();
 
+
+
+
+//print_r(value: $_SESSION['test']);
+$producto = $_SESSION['producto'];
+$tags = [];
+foreach ($producto['tags'] as $key => $value) {
+    //print_r($value['name']);
+    $tags[] = $value['name'];
+}
+
+
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -12,6 +28,17 @@
     <style>
         .separar-item {
             margin-top: 50px;
+        }
+        .etiquetas {
+            gap: 10px;
+            
+        }
+        .btn-ir{
+            margin-top: 30px;
+        }
+        .carousel img{
+            height: 250px;
+            width: 230px;
         }
     </style>
 </head>
@@ -70,7 +97,7 @@
 
         <!-- sidebar & content -->
         <div class="row ">
-            
+
 
             <div class="col-lg-2 col-md-3 col-sm-4 g-0 d-none d-sm-block">
                 <div class="d-flex flex-column min-vh-100 flex-shrink-0 p-3 text-white bg-dark ">
@@ -153,14 +180,15 @@
                     <div class="row">
 
                         <div class="card">
-                            <h5 class="card-header">Featured</h5>
+                            <h5 class="card-header">Detalles del producto</h5>
                             <div class="row">
                                 <div class="col-lg-3 col-md-4 col-sm-5">
                                     <div id="carouselExampleControlsNoTouching" class="carousel slide"
                                         data-bs-touch="false">
                                         <div class="carousel-inner">
                                             <div class="carousel-item active">
-                                                <img src="./producto.jpg" class="d-block w-100" alt="...">
+                                                <img src="<?php echo $producto['cover'] ?>" class="d-block w-100"
+                                                    alt="...">
                                             </div>
                                             <div class="carousel-item">
                                                 <img src="./producto.jpg" class="d-block w-100" alt="...">
@@ -183,11 +211,29 @@
                                 </div>
                                 <div class="col-lg-9 col-md-8 col-sm-7">
                                     <div class="card-body">
-                                        <h5 class="card-title">Special title treatment</h5>
-                                        <p class="card-text">With supporting text below as a natural lead-in to
-                                            additional
-                                            content.</p>
-                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                                        <h5 class="card-title"><?php echo $producto['name'] ?></h5>
+                                        <p class="card-text"><?php echo $producto['description'] ?></p>
+                                        <div class></div>
+                                        <div class="etiquetas d-flex">
+                                            <?php
+                                                if (isset($producto['brand']['name'])) {
+                                                    echo '<button type="button" class="btn btn-success btn-sm">'.$producto['brand']['name'].'</button>';
+                                                }
+                                            ?>
+                                            
+                                            <?php
+                                            foreach ($tags as $value) {
+                                                echo ' <button type="button" class="btn btn-danger">
+                                                      ' . $value . '
+                                                </button>';
+                                            }
+                                            ?>
+
+                                        </div>
+                                        <div class="btn-ir">
+                                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                                        </div>
+                                       
                                     </div>
                                 </div>
 
