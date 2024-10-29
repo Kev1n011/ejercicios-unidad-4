@@ -34,6 +34,7 @@
             $response = json_decode($response);
 
             if(isset($response -> data) && is_object($response)) {
+                $_SESSION['logeado'] = true;
                 header("location: ../home.php");
             }
             else {

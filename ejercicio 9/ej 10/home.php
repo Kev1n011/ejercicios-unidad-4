@@ -2,6 +2,9 @@
 
 include './detalle_producto.php';
 //print_r($arreglo[11]['name']);
+$productsController = new ProductController();
+
+$productos = $productsController->obtener_productos();
 
 ?>
 
@@ -191,7 +194,7 @@ include './detalle_producto.php';
 					</div>
 					<div class="row cartas">
 						<?php
-						foreach ($arreglo as $valor) {
+						foreach ($productos as $valor) {
 
 							echo '
 								<div class="col-lg-4 col-md-6 col-sm-12">
@@ -208,7 +211,7 @@ include './detalle_producto.php';
 										<div class="row">
 											<div class="col-8">
 												
-												<form method="POST">
+												<form action="./details.php?slug= '.$valor['slug'].'" method="POST">
 													 <input type="hidden" name="id_producto" value="'. $valor['id'].'">
 													<button type="submit" name="btn-primary" class="btn btn-primary">Ir al producto</button>
 
@@ -248,32 +251,36 @@ include './detalle_producto.php';
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+						<h1 class="modal-title fs-5" id="exampleModalLabel">Añadir producto</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<form>
+						<form method="POST">
 							<div class="mb-3">
-								<label for="exampleInputEmail1" class="form-label">Email address</label>
-								<input type="email" class="form-control" id="exampleInputEmail1"
-									aria-describedby="emailHelp">
-								<div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-								</div>
+								<label for="nombre" class="form-label">Nombre</label>
+								<input type="text" class="form-control" id="nombre" name="nombre"> 
+								
 							</div>
 							<div class="mb-3">
-								<label for="exampleInputPassword1" class="form-label">Password</label>
-								<input type="password" class="form-control" id="exampleInputPassword1">
+								<label for="slug" class="form-label">Slug</label>
+								<input type="text" class="form-control" id="slug" name="slug">
 							</div>
-							<div class="mb-3 form-check">
-								<input type="checkbox" class="form-check-input" id="exampleCheck1">
-								<label class="form-check-label" for="exampleCheck1">Check me out</label>
+							<div class="mb-3">
+								<label for="descripcion" class="form-label">Descripción</label>
+								<textarea name="descripcion" class="form-control" id="descripcion" name="descripcion"></textarea>
 							</div>
+							<div class="mb-3">
+								<label for="features" class="form-label">Features</label>
+								<input type="text" class="form-control" id="features" name="features">
+							</div>
+							<input type="hidden" name="agregarProducto" value="agregarProducto">
+							<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+						<button type="submit" class="btn btn-primary">Añadir producto</button>
+					</div>
 						</form>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Send message</button>
-					</div>
+					
 				</div>
 			</div>
 		</div>

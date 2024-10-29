@@ -1,11 +1,11 @@
 <?php
-session_start();
-
-
+include('./detalle_producto.php');
 
 
 //print_r(value: $_SESSION['test']);
-$producto = $_SESSION['producto'];
+$productsController = new ProductController();
+
+$producto =$productsController->detalle_producto();
 $tags = [];
 foreach ($producto['tags'] as $key => $value) {
     //print_r($value['name']);
