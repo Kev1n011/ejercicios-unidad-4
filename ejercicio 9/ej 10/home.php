@@ -211,8 +211,8 @@ $productos = $productsController->obtener_productos();
 										<div class="row">
 											<div class="col-8">
 												
-												<form action="./details.php?slug= '.$valor['slug'].'" method="POST">
-													 <input type="hidden" name="id_producto" value="'. $valor['id'].'">
+												<form action="./details.php?slug= ' . $valor['slug'] . '" method="POST">
+													 <input type="hidden" name="id_producto" value="' . $valor['id'] . '">
 													<button type="submit" name="btn-primary" class="btn btn-primary">Ir al producto</button>
 
 												</form>
@@ -224,19 +224,22 @@ $productos = $productsController->obtener_productos();
 										<div class="row">
 											<div class="col-8">
 												<button type="button" class="btn btn-warning" data-bs-toggle="modal"
-													data-bs-target="#exampleModal">Editar</button>
+													data-bs-target="#exampleModal' . $valor['id'] . '">Editar</button>
 											</div>
 										</div>
 									</div>
+									 
 
 								</div>
 							</div>
 								</div>
 								';
-						
+
 						}
 
-						?>
+						$id_producto = $valor['id']
+
+							?>
 
 
 
@@ -258,8 +261,8 @@ $productos = $productsController->obtener_productos();
 						<form method="POST">
 							<div class="mb-3">
 								<label for="nombre" class="form-label">Nombre</label>
-								<input type="text" class="form-control" id="nombre" name="nombre"> 
-								
+								<input type="text" class="form-control" id="nombre" name="nombre">
+
 							</div>
 							<div class="mb-3">
 								<label for="slug" class="form-label">Slug</label>
@@ -267,7 +270,8 @@ $productos = $productsController->obtener_productos();
 							</div>
 							<div class="mb-3">
 								<label for="descripcion" class="form-label">Descripción</label>
-								<textarea name="descripcion" class="form-control" id="descripcion" name="descripcion"></textarea>
+								<textarea name="descripcion" class="form-control" id="descripcion"
+									name="descripcion"></textarea>
 							</div>
 							<div class="mb-3">
 								<label for="features" class="form-label">Features</label>
@@ -275,15 +279,70 @@ $productos = $productsController->obtener_productos();
 							</div>
 							<input type="hidden" name="agregarProducto" value="agregarProducto">
 							<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-						<button type="submit" class="btn btn-primary">Añadir producto</button>
-					</div>
+								<button type="button" class="btn btn-secondary"
+									data-bs-dismiss="modal">Cancelar</button>
+								<button type="submit" class="btn btn-primary">Añadir producto</button>
+							</div>
 						</form>
 					</div>
-					
+
 				</div>
 			</div>
 		</div>
+
+		<?php
+		foreach ($productos as $valor) {
+
+			echo '
+
+			<div class="modal fade" id="exampleModal' . $valor['id'] . '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel">Editar producto</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form method="POST">
+								<div class="mb-3">
+									<label for="nombre" class="form-label">Nombre</label>
+									<input type="text" class="form-control" id="nombre" name="nombre" value="' . $valor['name'] . '"> 
+									
+								</div>
+								<div class="mb-3">
+									<label for="slug" class="form-label">Slug</label>
+									<input type="text" class="form-control" id="slug" name="slug" value="'.$valor['slug'].'">
+								</div>
+								<div class="mb-3">
+									<label for="descripcion" class="form-label">Descripción</label>
+									<textarea name="descripcion" class="form-control" id="descripcion" name="descripcion">'.$valor['description'].'</textarea>
+								</div>
+								<div class="mb-3">
+									<label for="features" class="form-label">Features</label>
+									<input type="text" class="form-control" id="features" name="features" value="'.$valor['features'].'">
+								</div>
+								<input type="hidden" name="PUT" value="PUT">
+								<input type="hidden" name="id_producto" value="' . $valor['id'] . '">
+								<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-primary">Guardar cambios</button>
+						</div>
+							</form>
+						</div>
+						
+					</div>
+				</div>
+		</div>
+								
+								';
+
+		}
+
+		$id_producto = $valor['id']
+
+			?>
+
+
 
 
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

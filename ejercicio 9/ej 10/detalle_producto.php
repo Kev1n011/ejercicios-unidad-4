@@ -6,12 +6,22 @@ if (!isset($_SESSION['logeado']) || $_SESSION['logeado'] !== true) {
   exit;
 }
 
-if(isset($_POST['agregarProducto'])) {
+if (isset($_POST['agregarProducto'])) {
   $nuevo_producto = new ProductController();
 
-  $producto =$nuevo_producto->anadir_producto($_POST['nombre'], $_POST['slug'], $_POST['descripcion'], $_POST['features']);
+  $producto = $nuevo_producto->anadir_producto($_POST['nombre'], $_POST['slug'], $_POST['descripcion'], $_POST['features']);
+  header("Location: ./home.php");
+  exit();
 }
 
+//EDITAR PRODUCTO
+if (isset($_POST['PUT'])) {
+  $nuevo_producto = new ProductController();
+ 
+  $producto = $nuevo_producto->editar_producto($_POST['nombre'], $_POST['slug'], $_POST['descripcion'], $_POST['features'], $_POST['id_producto']);
+  header("Location: ./home.php");
+  exit();
+}
 class ProductController
 {
 
@@ -76,7 +86,6 @@ class ProductController
 
       $response2 = json_decode($response2, true);
       $producto = $response2['data'];
-      $nombre_brand = $response2['data']['brand']['name'];
       $_SESSION['producto'] = $producto;
       curl_close($curl);
 
@@ -115,7 +124,36 @@ class ProductController
     $response = json_decode($response, true);
 
     curl_close($curl);
-    
+
+    return $response;
+
+  }
+
+  public function editar_producto($nombre, $slug, $descripcion, $features, $id_producto)
+  {
+
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'PUT',
+      CURLOPT_POSTFIELDS => 'name='.$nombre.'&slug='.$slug.'&description='.$descripcion.'&features='.$features.'&id='.$id_producto.'',
+      CURLOPT_HTTPHEADER => array(
+        'Authorization: Bearer P5os0Rl292WOKqgHoPq53HCPvRrB2UkuvdUtmeBU',
+        'Cookie: XSRF-TOKEN=eyJpdiI6IndrNDQ0YWpsTFhic2VOWS96TFY5c1E9PSIsInZhbHVlIjoiYTlMMmw4dlkydGZKamY2dXJQK3M4a1hldmVlbUExenRyV2ZxaWhlYnpwN0xXYnhDWldGZ3ZCK3dlZFZ5ZnpKb2I3Q2JQeHJLS3NHTk1mY2oyN2RXS2lwTk9sNTYrbWRTMmduSm1OdTllUFIyMmxYbGgva0l5cFp0Z2lSNStCbEMiLCJtYWMiOiI3ODJlODgxMTY4YTEwNGEwNGY1MDA0MjY3NmFiMDJhNTA3NjQwYmE4ZGQyZmM2ZmY0MGU4ZmIxYmE3ZmY3ZmRlIiwidGFnIjoiIn0%3D; apicrud_session=eyJpdiI6Ii8wSVRtZzN5a2w1eDBnWlNyQXlpQ0E9PSIsInZhbHVlIjoicFVISFhUYWFxZWpEVW5Zek1NMmtYLzVlc0l6TWZDanlvaW5Rd3BmL0xvNCs1c3c1SCtIVjd1ZVJ1N3Ewb3o4R1ZoalgrV2cvSSttTnM1WEtPdFM2ZUZxNHBuS1paM1dxQzNjR2lIaTB5eUo3Q1gvRW1od3EwOHNiNkNGNXdTWHQiLCJtYWMiOiJjMGQ3NWY0ZWQxNzk2MTJkZTBiZDEzNTI4ZDNmY2ExZDE0ODQ2YjRiZDk4MzFiMTZmYzVjNWQ0NzJiNDMwMGIzIiwidGFnIjoiIn0%3D',
+        'Content-Type: application/x-www-form-urlencoded'
+      ),
+    ));
+
+    $response = curl_exec($curl);
+
+    curl_close($curl);
     return $response;
 
   }
