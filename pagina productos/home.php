@@ -217,8 +217,15 @@ $productos = $productsController->obtener_productos();
 
 												</form>
 											</div>
+											
 											<div class="col-4">
-												<button type="button" class="btn btn-danger">Eliminar</button>
+												<form method="POST" id="eliminar_producto_'.$valor['id'].'">
+													 <input type="hidden" name="id_producto" value="' . $valor['id'] . '">
+													 <input type="hidden" name="borrar" value="borrar">
+													<button onclick="abrir_sweet_alert('.$valor['id'].')" type="button" class="btn btn-danger">Eliminar</button>
+
+												</form>
+												
 											</div>
 										</div>
 										<div class="row">
@@ -277,6 +284,7 @@ $productos = $productsController->obtener_productos();
 								<label for="features" class="form-label">Features</label>
 								<input type="text" class="form-control" id="features" name="features">
 							</div>
+
 							<input type="hidden" name="agregarProducto" value="agregarProducto">
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
@@ -311,15 +319,15 @@ $productos = $productsController->obtener_productos();
 								</div>
 								<div class="mb-3">
 									<label for="slug" class="form-label">Slug</label>
-									<input type="text" class="form-control" id="slug" name="slug" value="'.$valor['slug'].'">
+									<input type="text" class="form-control" id="slug" name="slug" value="' . $valor['slug'] . '">
 								</div>
 								<div class="mb-3">
 									<label for="descripcion" class="form-label">Descripción</label>
-									<textarea name="descripcion" class="form-control" id="descripcion" name="descripcion">'.$valor['description'].'</textarea>
+									<textarea name="descripcion" class="form-control" id="descripcion" name="descripcion">' . $valor['description'] . '</textarea>
 								</div>
 								<div class="mb-3">
 									<label for="features" class="form-label">Features</label>
-									<input type="text" class="form-control" id="features" name="features" value="'.$valor['features'].'">
+									<input type="text" class="form-control" id="features" name="features" value="' . $valor['features'] . '">
 								</div>
 								<input type="hidden" name="PUT" value="PUT">
 								<input type="hidden" name="id_producto" value="' . $valor['id'] . '">
@@ -344,6 +352,36 @@ $productos = $productsController->obtener_productos();
 
 
 
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+		<script>
+			function abrir_sweet_alert(id) {
+				swal({
+				title: "Are you sure?",
+				text: "Once deleted, you will not be able to recover this imaginary file!",
+				icon: "warning",
+				buttons: true,
+				dangerMode: true,
+			})
+				.then((willDelete) => {
+					if (willDelete) {
+						swal("Poof! Your imaginary file has been deleted!", {
+							icon: "success",
+							
+						}).then(() => {
+							document.getElementById('eliminar_producto_' + id).submit();
+						});
+						
+					} else {
+						swal("Your imaginary file is safe!");
+					}
+				});
+
+				
+			}
+			
+
+		</script>
 
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
