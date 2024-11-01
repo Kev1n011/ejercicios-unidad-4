@@ -1,6 +1,6 @@
 <?php
 
-include './detalle_producto.php';
+include './auth/productController.php';
 //print_r($arreglo[11]['name']);
 $productsController = new ProductController();
 
@@ -265,7 +265,7 @@ $productos = $productsController->obtener_productos();
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<form method="POST">
+						<form method="POST" enctype="multipart/form-data">
 							<div class="mb-3">
 								<label for="nombre" class="form-label">Nombre</label>
 								<input type="text" class="form-control" id="nombre" name="nombre">
@@ -283,6 +283,10 @@ $productos = $productsController->obtener_productos();
 							<div class="mb-3">
 								<label for="features" class="form-label">Features</label>
 								<input type="text" class="form-control" id="features" name="features">
+							</div>
+							<div class="mb-3">
+								<label for="cover" class="form-label">Imagen</label>
+								<input type="file" class="form-control" id="cover" name="cover">
 							</div>
 
 							<input type="hidden" name="agregarProducto" value="agregarProducto">

@@ -1,5 +1,5 @@
 <?php
-include('./detalle_producto.php');
+include('./auth/productController.php');
 
 
 //print_r(value: $_SESSION['test']);
