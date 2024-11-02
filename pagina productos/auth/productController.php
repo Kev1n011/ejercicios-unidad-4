@@ -24,10 +24,10 @@ if (isset($_POST['agregarProducto'])) {
 
   //Validar si la extension coincidde con el de una imagen
   if(in_array($cover_extension_actual, $extensiones_oermitidas)){
-    $cover_nuevo = uniqid('',true).'_'.$cover_nombre_actual.'.'. $cover_extension_actual;
+    $cover_nuevo = uniqid('',true).'_'.$cover_nombre_actual.'.'. $cover_extension_actual; //Se le asigna un id unico al nombre del archivo para evitar que se repita
     $cover_folder = './uploads/'. $cover_nuevo;
     move_uploaded_file($cover_tmp, $cover_folder);
-    $producto = $nuevo_producto->anadir_producto($_POST['nombre'], $_POST['slug'], $_POST['descripcion'], $_POST['features'], $cover_folder);
+    $producto = $nuevo_producto->anadir_producto($_POST['nombre'], $_POST['slug'], $_POST['descripcion'], $_POST['features'],$_POST['brand_dropdown'], $cover_folder);
   }else {
     echo'Archivo no permitido';
   }
@@ -40,7 +40,7 @@ if (isset($_POST['agregarProducto'])) {
 if (isset($_POST['PUT'])) {
   $nuevo_producto = new ProductController();
 
-  $producto = $nuevo_producto->editar_producto($_POST['nombre'], $_POST['slug'], $_POST['descripcion'], $_POST['features'], $_POST['id_producto']);
+  $producto = $nuevo_producto->editar_producto($_POST['nombre'], $_POST['slug'], $_POST['descripcion'], $_POST['features'], $_POST['brand_dropdown'], $_POST['id_producto']);
   header("Location: ./home.php");
   exit();
 }
@@ -130,7 +130,7 @@ class ProductController
     }
   }
 
-  public function anadir_producto($nombre, $slug, $descripcion, $features, $cover)
+  public function anadir_producto($nombre, $slug, $descripcion, $features, $brand_id, $cover)
   {
 
     $curl = curl_init();
@@ -144,7 +144,7 @@ class ProductController
       CURLOPT_FOLLOWLOCATION => true,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => 'POST',
-      CURLOPT_POSTFIELDS => array('name' => $nombre,'slug' => $slug,'description' => $descripcion,'features' => $features,'cover'=> new CURLFILE($cover)),
+      CURLOPT_POSTFIELDS => array('name' => $nombre,'slug' => $slug,'description' => $descripcion,'features' => $features,'brand_id' => $brand_id ,'cover'=> new CURLFILE($cover)),
       CURLOPT_HTTPHEADER => array(
         'Authorization: Bearer 38|BlPdbiUNy96CLf3MfJ2qFzRqfMiWmgvq3CRVg9Mv'
       ),
@@ -160,7 +160,7 @@ class ProductController
 
   }
 
-  public function editar_producto($nombre, $slug, $descripcion, $features, $id_producto)
+  public function editar_producto($nombre, $slug, $descripcion, $features, $brand_id, $id_producto)
   {
 
     $curl = curl_init();
@@ -174,7 +174,7 @@ class ProductController
       CURLOPT_FOLLOWLOCATION => true,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => 'PUT',
-      CURLOPT_POSTFIELDS => 'name=' . $nombre . '&slug=' . $slug . '&description=' . $descripcion . '&features=' . $features . '&id=' . $id_producto . '',
+      CURLOPT_POSTFIELDS => 'name=' . $nombre . '&slug=' . $slug . '&description=' . $descripcion . '&features=' . $features . '&brand_id=' . $brand_id . '&id=' . $id_producto . '',
       CURLOPT_HTTPHEADER => array(
         'Authorization: Bearer 38|BlPdbiUNy96CLf3MfJ2qFzRqfMiWmgvq3CRVg9Mv',
         'Cookie: XSRF-TOKEN=eyJpdiI6IndrNDQ0YWpsTFhic2VOWS96TFY5c1E9PSIsInZhbHVlIjoiYTlMMmw4dlkydGZKamY2dXJQK3M4a1hldmVlbUExenRyV2ZxaWhlYnpwN0xXYnhDWldGZ3ZCK3dlZFZ5ZnpKb2I3Q2JQeHJLS3NHTk1mY2oyN2RXS2lwTk9sNTYrbWRTMmduSm1OdTllUFIyMmxYbGgva0l5cFp0Z2lSNStCbEMiLCJtYWMiOiI3ODJlODgxMTY4YTEwNGEwNGY1MDA0MjY3NmFiMDJhNTA3NjQwYmE4ZGQyZmM2ZmY0MGU4ZmIxYmE3ZmY3ZmRlIiwidGFnIjoiIn0%3D; apicrud_session=eyJpdiI6Ii8wSVRtZzN5a2w1eDBnWlNyQXlpQ0E9PSIsInZhbHVlIjoicFVISFhUYWFxZWpEVW5Zek1NMmtYLzVlc0l6TWZDanlvaW5Rd3BmL0xvNCs1c3c1SCtIVjd1ZVJ1N3Ewb3o4R1ZoalgrV2cvSSttTnM1WEtPdFM2ZUZxNHBuS1paM1dxQzNjR2lIaTB5eUo3Q1gvRW1od3EwOHNiNkNGNXdTWHQiLCJtYWMiOiJjMGQ3NWY0ZWQxNzk2MTJkZTBiZDEzNTI4ZDNmY2ExZDE0ODQ2YjRiZDk4MzFiMTZmYzVjNWQ0NzJiNDMwMGIzIiwidGFnIjoiIn0%3D',

@@ -3,8 +3,12 @@
 include './auth/productController.php';
 //print_r($arreglo[11]['name']);
 $productsController = new ProductController();
-
 $productos = $productsController->obtener_productos();
+
+include './auth/brandController.php';
+$brandsController = new BrandController();
+
+$brands = $brandsController->obtenerMarcas();
 
 ?>
 
@@ -219,10 +223,10 @@ $productos = $productsController->obtener_productos();
 											</div>
 											
 											<div class="col-4">
-												<form method="POST" id="eliminar_producto_'.$valor['id'].'">
+												<form method="POST" id="eliminar_producto_' . $valor['id'] . '">
 													 <input type="hidden" name="id_producto" value="' . $valor['id'] . '">
 													 <input type="hidden" name="borrar" value="borrar">
-													<button onclick="abrir_sweet_alert('.$valor['id'].')" type="button" class="btn btn-danger">Eliminar</button>
+													<button onclick="abrir_sweet_alert(' . $valor['id'] . ')" type="button" class="btn btn-danger">Eliminar</button>
 
 												</form>
 												
@@ -285,6 +289,15 @@ $productos = $productsController->obtener_productos();
 								<input type="text" class="form-control" id="features" name="features">
 							</div>
 							<div class="mb-3">
+								<select class="form-select" name="brand_dropdown" id="brand_dropdown" aria-label="Default select example">
+									<?php
+									foreach ($brands as $brand) {
+										echo '<option value="' . $brand['id'] . '">' . $brand['name'] . '</option>';
+									}
+									?>
+								</select>
+							</div>
+							<div class="mb-3">
 								<label for="cover" class="form-label">Imagen</label>
 								<input type="file" class="form-control" id="cover" name="cover">
 							</div>
@@ -304,9 +317,7 @@ $productos = $productsController->obtener_productos();
 
 		<?php
 		foreach ($productos as $valor) {
-
 			echo '
-
 			<div class="modal fade" id="exampleModal' . $valor['id'] . '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -319,7 +330,6 @@ $productos = $productsController->obtener_productos();
 								<div class="mb-3">
 									<label for="nombre" class="form-label">Nombre</label>
 									<input type="text" class="form-control" id="nombre" name="nombre" value="' . $valor['name'] . '"> 
-									
 								</div>
 								<div class="mb-3">
 									<label for="slug" class="form-label">Slug</label>
@@ -327,27 +337,47 @@ $productos = $productsController->obtener_productos();
 								</div>
 								<div class="mb-3">
 									<label for="descripcion" class="form-label">Descripción</label>
-									<textarea name="descripcion" class="form-control" id="descripcion" name="descripcion">' . $valor['description'] . '</textarea>
+									<textarea name="descripcion" class="form-control" id="descripcion">' . $valor['description'] . '</textarea>
 								</div>
 								<div class="mb-3">
 									<label for="features" class="form-label">Features</label>
 									<input type="text" class="form-control" id="features" name="features" value="' . $valor['features'] . '">
 								</div>
+								<div class="mb-3">
+									<label for="brand_dropdown" class="form-label">Marca</label>
+									<select class="form-select" name="brand_dropdown" id="brand_dropdown" aria-label="Default select example">';
+									if($valor['brand_id']){
+										echo '<option value="' . $valor['brand']['id'] . '">' . $valor['brand']['name'] . '</option>';
+										foreach ($brands as $brand) {
+											if($valor['brand']['id'] == $brand['id']){ //No repetir la marca dos veces
+	
+											}else{
+												echo '<option value="' . $brand['id'] . '">' . $brand['name'] . '</option>';
+											}
+											
+										}
+									}else{
+										echo '<option disabled selected value> -- Selecciona una marca </option>';
+										foreach ($brands as $brand) {		
+											echo '<option value="' . $brand['id'] . '">' . $brand['name'] . '</option>';
+										
+									}
+									}
+									
+		
+								echo '</select>
+								</div>
 								<input type="hidden" name="PUT" value="PUT">
 								<input type="hidden" name="id_producto" value="' . $valor['id'] . '">
 								<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-							<button type="submit" class="btn btn-primary">Guardar cambios</button>
-						</div>
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+									<button type="submit" class="btn btn-primary">Guardar cambios</button>
+								</div>
 							</form>
 						</div>
-						
 					</div>
 				</div>
-		</div>
-								
-								';
-
+			</div>';
 		}
 
 		$id_producto = $valor['id']
@@ -361,36 +391,43 @@ $productos = $productsController->obtener_productos();
 		<script>
 			function abrir_sweet_alert(id) {
 				swal({
-				title: "Are you sure?",
-				text: "Once deleted, you will not be able to recover this imaginary file!",
-				icon: "warning",
-				buttons: true,
-				dangerMode: true,
-			})
-				.then((willDelete) => {
-					if (willDelete) {
-						swal("Poof! Your imaginary file has been deleted!", {
-							icon: "success",
-							
-						}).then(() => {
-							document.getElementById('eliminar_producto_' + id).submit();
-						});
-						
-					} else {
-						swal("Your imaginary file is safe!");
-					}
-				});
+					title: "Are you sure?",
+					text: "Once deleted, you will not be able to recover this imaginary file!",
+					icon: "warning",
+					buttons: true,
+					dangerMode: true,
+				})
+					.then((willDelete) => {
+						if (willDelete) {
+							swal("Poof! Your imaginary file has been deleted!", {
+								icon: "success",
 
-				
+							}).then(() => {
+								document.getElementById('eliminar_producto_' + id).submit();
+							});
+
+						} else {
+							swal("Your imaginary file is safe!");
+						}
+					});
+
+
 			}
-			
+
 
 		</script>
 
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 			crossorigin="anonymous"></script>
-		<script></script>
+		
+		
+		<script>
+			var e = document.getElementById("brand_dropdown");
+			e.onchange = function () {
+				var id_marca = e.options[e.selectedIndex].value; console.log('id marca: ', id_marca);
+			}
+		</script>
 </body>
 
 </html>
