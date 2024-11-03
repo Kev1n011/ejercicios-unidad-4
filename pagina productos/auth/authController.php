@@ -1,14 +1,34 @@
 <?php
     session_start();
-    if(isset($_POST['enviar'])){
-        switch ($_POST['enviar']) {
-            case 'enviar':
-                $username = $_POST['username'];
-                $password = $_POST['password'];
 
-                $login = new AuthController();
-                $login -> validar($username, $password);
+    function generar_token($lenght=10) {
+        $cadena = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $token = '';
+        for ($i=0; $i < $lenght; $i++) { 
+            $token.= $cadena[rand(0,35)];
         }
+        return $token;
+    }
+
+    if (!isset($_SESSION['global_token'])) {
+        $_SESSION['global_token'] = generar_token(10);
+    }
+    if(isset($_POST['enviar'])){
+        if($_POST['global_token'] == $_SESSION['global_token']){
+            switch ($_POST['enviar']) {
+                case 'enviar':
+                    $username = $_POST['username'];
+                    $password = $_POST['password'];
+    
+                    $login = new AuthController();
+                    $login -> validar($username, $password);
+            }
+
+        }
+        else {
+            echo'falta el token';
+        }
+        
 
     }
 

@@ -225,6 +225,7 @@ $brands = $brandsController->obtenerMarcas();
 											<div class="col-4">
 												<form method="POST" id="eliminar_producto_' . $valor['id'] . '">
 													 <input type="hidden" name="id_producto" value="' . $valor['id'] . '">
+													 <input type="hidden" name="global_token" value='.$_SESSION['global_token'].'>	
 													 <input type="hidden" name="borrar" value="borrar">
 													<button onclick="abrir_sweet_alert(' . $valor['id'] . ')" type="button" class="btn btn-danger">Eliminar</button>
 
@@ -301,7 +302,7 @@ $brands = $brandsController->obtenerMarcas();
 								<label for="cover" class="form-label">Imagen</label>
 								<input type="file" class="form-control" id="cover" name="cover">
 							</div>
-
+							<input type="hidden" name="global_token" value="<?php echo $_SESSION['global_token']; ?>">	
 							<input type="hidden" name="agregarProducto" value="agregarProducto">
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
@@ -367,6 +368,7 @@ $brands = $brandsController->obtenerMarcas();
 		
 								echo '</select>
 								</div>
+								<input type="hidden" name="global_token" value='.$_SESSION['global_token'].'>	
 								<input type="hidden" name="PUT" value="PUT">
 								<input type="hidden" name="id_producto" value="' . $valor['id'] . '">
 								<div class="modal-footer">

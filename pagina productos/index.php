@@ -1,4 +1,6 @@
-
+<?php
+include("./auth/config.php");
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -76,6 +78,7 @@
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">Password</label>
                             <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+                            <input type="hidden" name="global_token" value="<?php echo $_SESSION['global_token']; ?>">
                             <input type="hidden" name="enviar" value="enviar">
                         </div>
                         <div class="d-grid gap-2">
