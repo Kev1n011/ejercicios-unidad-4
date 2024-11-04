@@ -44,7 +44,7 @@
 
             if(isset($response -> data) && is_object($response)) {
                 $_SESSION['logeado'] = true;
-                header("location: ../home.php");
+                header("location: ../home");
             }
             else {
                 echo "credenciales no validas";
