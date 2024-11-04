@@ -111,12 +111,12 @@ class ProductController
 
   public function detalle_producto()
   {
-    if (isset($_POST['id_producto'])) {
-      $_SESSION['test'] = $_POST['id_producto'];
+    if (isset($_GET['slug'])) {
+      $_SESSION['test'] = $_GET['slug'];
       $curl = curl_init();
 
       curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products/' . $_SESSION['test'] . '',
+        CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products/slug/' . $_SESSION['test'] . '',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,

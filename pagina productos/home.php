@@ -63,6 +63,7 @@ $brands = $brandsController->obtenerMarcas();
 
 <body>
 
+
 	<div class="container-fluid min-vh-100 d-flex flex-column">
 
 		<!-- nav -->
@@ -215,10 +216,8 @@ $brands = $brandsController->obtenerMarcas();
 										<div class="row">
 											<div class="col-8">
 												
-												<form action="./details.php?slug= ' . $valor['slug'] . '" method="POST">
-													 <input type="hidden" name="id_producto" value="' . $valor['id'] . '">
-													<button type="submit" name="btn-primary" class="btn btn-primary">Ir al producto</button>
-
+												 <form action="./details/'.$valor['slug'].'" method="GET">
+													<button type="submit" class="btn btn-primary">Ir al producto</button>
 												</form>
 											</div>
 											
